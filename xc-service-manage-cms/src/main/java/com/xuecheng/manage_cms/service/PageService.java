@@ -6,10 +6,9 @@ import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.manage_cms.dao.CmsPageRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,25 +22,29 @@ public class PageService {
      * @param queryPageRequest 查询条件
      * @return 页面列表
      */
-    public QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest){
-        if (queryPageRequest == null) {
-            queryPageRequest = new QueryPageRequest();
+    public QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest) {
+        //条件值
+        CmsPage cmsPage = new CmsPage();
+        //站点ID
+        if (StringUtils.isNoneEmpty(queryPageRequest.getSiteId())) {
+            cmsPage.setSiteId(queryPageRequest.getSiteId());
         }
-        if (page <= 0) {
-            page = 1;
+        //页面别名
+        if (StringUtils.isNoneEmpty(queryPageRequest.getPageAliase())) {
+            cmsPage.setPageAliase(queryPageRequest.getPageAliase());
         }
-        page = page - 1;//为了适应mongodb的接口将页码减1
-        if (size <= 0) {
-            size = 20;
-        }
+        //分页查询
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching();
+        exampleMatcher = exampleMatcher.withMatcher("pageAliase", ExampleMatcher.GenericPropertyMatchers.contains());
+        Example<CmsPage> example = Example.of(cmsPage, exampleMatcher);
         //分页对象
         Pageable pageable = new PageRequest(page, size);
-        //分页查询
-        Page<CmsPage> all = cmsPageRepository.findAll(pageable);
+        Page<CmsPage> all = cmsPageRepository.findAll(example, pageable);
         QueryResult<CmsPage> cmsPageQueryResult = new QueryResult<CmsPage>();
         cmsPageQueryResult.setList(all.getContent());
         cmsPageQueryResult.setTotal(all.getTotalElements());
         //返回结果
-        return new QueryResponseResult(CommonCode.SUCCESS,cmsPageQueryResult);
+        QueryResponseResult queryResponseResult = new QueryResponseResult(CommonCode.SUCCESS, cmsPageQueryResult);
+        return queryResponseResult;
     }
 }

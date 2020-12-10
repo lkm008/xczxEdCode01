@@ -18,7 +18,9 @@ public class PageServiceTest {
     public void findList() {
 
         QueryPageRequest queryPageRequest = new QueryPageRequest();
+        queryPageRequest.setPageAliase("首页");
         QueryResponseResult list = pageService.findList(1, 5, queryPageRequest);
-        System.out.println("list = " + list);
+        System.out.println("list = " + list.getQueryResult().getList());
+        System.out.println("total = " + list.getQueryResult().getTotal());
     }
 }
