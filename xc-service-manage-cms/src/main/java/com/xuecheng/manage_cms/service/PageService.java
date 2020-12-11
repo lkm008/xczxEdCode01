@@ -29,14 +29,8 @@ public class PageService {
      * @return 页面列表
      */
     public QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest) {
-        if (page <= 1) {
-            page=0;
-        }else {
-            page-=1;
-        }
-        if (size <=1) {
-            size=1;
-        }
+        page=page >= 1?page-1:0;
+        size=size >=1?size:1;
         //条件值
         CmsPage cmsPage = new CmsPage();
         //站点ID
@@ -47,8 +41,17 @@ public class PageService {
         if (StringUtils.isNoneEmpty(queryPageRequest.getPageAliase())) {
             cmsPage.setPageAliase(queryPageRequest.getPageAliase());
         }
+//        页面名称
+        if (StringUtils.isNoneEmpty(queryPageRequest.getPageName())) {
+            cmsPage.setPageName(queryPageRequest.getPageName());
+        }
+//        页面类型
+        if (StringUtils.isNoneEmpty(queryPageRequest.getPageType())) {
+            cmsPage.setPageType(queryPageRequest.getPageType());
+        }
         ExampleMatcher exampleMatcher = ExampleMatcher.matching();
         exampleMatcher = exampleMatcher.withMatcher("pageAliase", ExampleMatcher.GenericPropertyMatchers.contains());
+        exampleMatcher = exampleMatcher.withMatcher("pageName", ExampleMatcher.GenericPropertyMatchers.contains());
         Example<CmsPage> example = Example.of(cmsPage,exampleMatcher);
         Pageable pageable = new PageRequest(page, size);
         Page<CmsPage> all = cmsPageRepository.findAll(example, pageable);
