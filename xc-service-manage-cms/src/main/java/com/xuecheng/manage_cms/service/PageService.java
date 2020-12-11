@@ -105,6 +105,10 @@ public class PageService {
             one.setPageWebPath(cmsPage.getPageWebPath());
             //更新物理路径
             one.setPagePhysicalPath(cmsPage.getPagePhysicalPath());
+            //更新页面类型
+            one.setPageType(cmsPage.getPageType());
+            //更新数据url
+            one.setDataUrl(cmsPage.getDataUrl());
             //执行更新
             CmsPage save = cmsPageRepository.save(one);
             if (save != null) {
