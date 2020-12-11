@@ -34,19 +34,16 @@ public class PageService {
         if (StringUtils.isNoneEmpty(queryPageRequest.getPageAliase())) {
             cmsPage.setPageAliase(queryPageRequest.getPageAliase());
         }
-        //分页查询
         ExampleMatcher exampleMatcher = ExampleMatcher.matching();
         exampleMatcher = exampleMatcher.withMatcher("pageAliase", ExampleMatcher.GenericPropertyMatchers.contains());
-        Example<CmsPage> example = Example.of(cmsPage, exampleMatcher);
-        //分页对象
+        Example<CmsPage> example = Example.of(cmsPage,exampleMatcher);
         Pageable pageable = new PageRequest(page, size);
         Page<CmsPage> all = cmsPageRepository.findAll(example, pageable);
         QueryResult<CmsPage> cmsPageQueryResult = new QueryResult<CmsPage>();
         cmsPageQueryResult.setList(all.getContent());
         cmsPageQueryResult.setTotal(all.getTotalElements());
         //返回结果
-        QueryResponseResult queryResponseResult = new QueryResponseResult(CommonCode.SUCCESS, cmsPageQueryResult);
-        return queryResponseResult;
+        return new QueryResponseResult(CommonCode.SUCCESS, cmsPageQueryResult);
     }
 
     //添加页面
