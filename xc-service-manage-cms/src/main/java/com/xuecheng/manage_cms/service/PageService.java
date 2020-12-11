@@ -26,6 +26,14 @@ public class PageService {
      * @return 页面列表
      */
     public QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest) {
+        if (page <= 1) {
+            page=0;
+        }else {
+            page-=1;
+        }
+        if (size <=1) {
+            size=1;
+        }
         //条件值
         CmsPage cmsPage = new CmsPage();
         //站点ID
