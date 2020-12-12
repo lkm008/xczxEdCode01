@@ -12,6 +12,10 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(value="cms模板管理接口",description = "cms模板管理接口，提供模板的增、删、改、查")
 public interface CmsTemplateControllerApi {
+
+    @ApiOperation("查询模板列表")
+    public QueryResponseResult findAll() ;
+
     @ApiOperation("分页查询模板列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name="page",value = "页码",required=true,paramType="path",dataType="int"),

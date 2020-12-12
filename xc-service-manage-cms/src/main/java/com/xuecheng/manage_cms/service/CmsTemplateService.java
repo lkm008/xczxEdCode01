@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +21,14 @@ public class CmsTemplateService {
     @Autowired
     CmsTemplateRepository cmsTemplateRepository;
 
+    public QueryResponseResult findAll(){
+        List<CmsTemplate> all = cmsTemplateRepository.findAll();
+        QueryResult<CmsTemplate> cmsPageQueryResult = new QueryResult<CmsTemplate>();
+        cmsPageQueryResult.setList(all);
+        cmsPageQueryResult.setTotal(all.size());
+        //返回结果
+        return new QueryResponseResult(CommonCode.SUCCESS, cmsPageQueryResult);
+    }
     /**
      * 模板列表分页查询
      * @param page 当前页码

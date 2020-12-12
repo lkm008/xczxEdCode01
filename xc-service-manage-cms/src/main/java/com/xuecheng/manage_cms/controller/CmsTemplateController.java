@@ -17,6 +17,12 @@ public class CmsTemplateController implements CmsTemplateControllerApi {
     CmsTemplateService templateService;
 
     @Override
+    @GetMapping("/findAll")
+    public QueryResponseResult findAll() {
+        return templateService.findAll();
+    }
+
+    @Override
     @GetMapping("/list/{page}/{size}")
     public QueryResponseResult findList(@PathVariable("page") int page, @PathVariable("size") int size, QueryTemplateRequest queryTemplateRequest) {
         return templateService.findList(page,size,queryTemplateRequest);
