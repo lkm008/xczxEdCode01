@@ -39,7 +39,7 @@ public class CmsPageController  implements CmsPageControllerApi {
     public CmsPageResult edit(@PathVariable("id") String id, @RequestBody CmsPage cmsPage) {
         return pageService.update(id,cmsPage);
     }
-
+    @Override
     @DeleteMapping("/del/{id}") //使用http的delete方法完成岗位操作
     public ResponseResult delete(@PathVariable("id") String id) {
         return pageService.delete(id);

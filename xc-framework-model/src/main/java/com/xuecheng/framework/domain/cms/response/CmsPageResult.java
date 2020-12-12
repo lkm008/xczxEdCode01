@@ -4,7 +4,6 @@ import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.framework.model.response.ResultCode;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Created by mrt on 2018/3/31.
