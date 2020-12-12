@@ -28,6 +28,6 @@ public class GridFsTemplateTest {
         ObjectId objectId = gridFsTemplate.store(inputStram, "轮播图测试文件01", "");
         //得到文件ID
         String fileId = objectId.toString();
-        System.out.println(fileId);//5fd4a0a8a513c22848469f89
+        System.out.println(fileId);//5fd4ef39a513c20ee0ab59fe
     }
 }
