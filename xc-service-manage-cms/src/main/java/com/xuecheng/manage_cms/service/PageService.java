@@ -14,6 +14,7 @@ import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_cms.dao.CmsPageRepository;
+import com.xuecheng.manage_cms.dao.CmsSiteRepository;
 import com.xuecheng.manage_cms.dao.CmsTemplateRepository;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
@@ -39,6 +40,8 @@ import java.util.Optional;
 public class PageService {
     @Autowired
     CmsPageRepository cmsPageRepository;
+    @Autowired
+    CmsSiteRepository cmsSiteRepository;
     @Autowired
     RestTemplate restTemplate;
     @Autowired
@@ -250,4 +253,8 @@ public class PageService {
         return body;
 
     }
+
+
+    /*##############################################################################*/
+
 }
