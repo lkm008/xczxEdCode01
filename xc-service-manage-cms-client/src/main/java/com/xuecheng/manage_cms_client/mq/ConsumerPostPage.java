@@ -2,8 +2,8 @@ package com.xuecheng.manage_cms_client.mq;
 
 import com.alibaba.fastjson.JSON;
 import com.xuecheng.framework.domain.cms.CmsPage;
-import com.xuecheng.manage_cms.dao.CmsPageRepository;
-import com.xuecheng.manage_cms.service.PageService;
+import com.xuecheng.manage_cms_client.dao.CmsPageRepository;
+import com.xuecheng.manage_cms_client.service.PageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

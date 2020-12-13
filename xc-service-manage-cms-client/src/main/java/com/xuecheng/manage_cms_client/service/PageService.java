@@ -32,6 +32,7 @@ public class PageService {
     CmsSiteRepository cmsSiteRepository;
     @Autowired
     GridFsTemplate gridFsTemplate;
+
     @Autowired
     GridFSBucket gridFSBucket;
     /*##############################################################################*/

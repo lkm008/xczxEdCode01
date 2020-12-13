@@ -1,5 +1,6 @@
 package com.xuecheng.manage_cms.service;
 
+import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import org.junit.Test;
@@ -51,5 +52,23 @@ public class PageServiceTest {
     public void testGetModelByPageId() {
         Map model = pageService.getModelByPageId("5a795ac7dd573c04508f3a56");
         System.out.println("map = " + model);
+    }
+
+    @Test
+    public void testPostPage() {
+        pageService.sendPostPage("5a795ac7dd573c04508f3a56");
+    }
+
+    @Test
+    public void testSendPostPage() {
+        pageService.sendPostPage("5a795ac7dd573c04508f3a56");
+    }
+
+    @Test
+    public void testSaveHtml() {
+        String pageId = "5a795ac7dd573c04508f3a56";
+        String pageHtml = pageService.getPageHtml(pageId);
+        CmsPage cmsPage = pageService.saveHtml(pageId, pageHtml);
+        System.out.println(cmsPage.getHtmlFileId());
     }
 }
