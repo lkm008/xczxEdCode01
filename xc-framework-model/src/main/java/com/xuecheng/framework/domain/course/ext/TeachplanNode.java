@@ -2,7 +2,6 @@ package com.xuecheng.framework.domain.course.ext;
 
 import com.xuecheng.framework.domain.course.Teachplan;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.List;
