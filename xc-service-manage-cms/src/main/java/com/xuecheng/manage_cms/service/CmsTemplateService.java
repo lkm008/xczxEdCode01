@@ -9,10 +9,13 @@ import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_cms.dao.CmsTemplateRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,5 +117,12 @@ public class CmsTemplateService {
             return new ResponseResult(CommonCode.SUCCESS);
         }
         return new ResponseResult(CommonCode.FAIL);
+    }
+
+    @Autowired
+    GridFsTemplate gridFsTemplate;
+    public String saveTemplate(InputStream is,String filename){
+        ObjectId objectId = gridFsTemplate.store(is, filename, "");
+        return objectId.toString();
     }
 }

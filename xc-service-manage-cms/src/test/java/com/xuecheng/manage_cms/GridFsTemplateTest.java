@@ -26,6 +26,7 @@ public class GridFsTemplateTest {
         FileInputStream inputStram = new FileInputStream(file);
         //向GridFS存储文件
         ObjectId objectId = gridFsTemplate.store(inputStram, "轮播图测试文件01", "");
+        ObjectId objectId2 = gridFsTemplate.store(inputStram, "轮播图测试文件01", "");
         //得到文件ID
         String fileId = objectId.toString();
         System.out.println(fileId);//5fd4ef39a513c20ee0ab59fe
