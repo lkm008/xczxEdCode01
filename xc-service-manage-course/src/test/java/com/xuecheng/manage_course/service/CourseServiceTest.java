@@ -1,5 +1,6 @@
 package com.xuecheng.manage_course.service;
 
+import com.xuecheng.framework.domain.course.CourseMarket;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.model.response.ResponseResult;
 import org.junit.Test;
@@ -7,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -37,5 +40,24 @@ public class CourseServiceTest {
         teachplan.setParentid("2");
         ResponseResult responseResult = courseService.addTeachplan(teachplan);
         System.out.println("responseResult = " + responseResult);
+    }
+
+    @Test
+    public void testGetCourseMarketById() {
+        CourseMarket courseMarketById = courseService.getCourseMarketById("297e7c7c62b888f00162b8a965510001");
+        System.out.println("courseMarketById = " + courseMarketById);
+    }
+
+    @Test
+    public void testUpdateCourseMarket() {
+        CourseMarket one = new CourseMarket();
+        one.setCharge("203009");
+        one.setStartTime(new Date());//课程有效期，开始时间
+        one.setEndTime(new Date());//课程有效期，结束时间
+        one.setPrice(200f);
+        one.setQq("4455432");
+        one.setValid("204001");
+        CourseMarket courseMarket = courseService.updateCourseMarket("40289981766c49ed01766c56f27f0001", one);
+        System.out.println("courseMarket = " + courseMarket);
     }
 }
