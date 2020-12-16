@@ -111,8 +111,6 @@ public class CourseService {
     }
 
     public QueryResponseResult findCourseList(int page, int size, CourseListRequest courseListRequest){
-        page=page >= 1?page-1:0;
-        size=size >= 1?size : 1;
         PageHelper.startPage(page, size);//查询第一页，每页显示10条记录
         Page<CourseInfo> courseListPage = courseMapper.findCourseListPage(courseListRequest);
         QueryResult<CourseInfo> queryResult = new QueryResult<>();
@@ -128,6 +126,32 @@ public class CourseService {
         courseBase.setStatus("202001");
         courseBaseRepository.save(courseBase);
         return new AddCourseResult(CommonCode.SUCCESS,courseBase.getId());
+    }
+
+    public CourseBase getCoursebaseById(String courseId) {
+        Optional<CourseBase> optional = courseBaseRepository.findById(courseId);
+        if(optional.isPresent()){
+            return optional.get();
+        }
+        return null;
+    }
+
+    @Transactional
+    public ResponseResult updateCoursebase(String id, CourseBase courseBase) {
+        CourseBase one = this.getCoursebaseById(id);
+        if(one == null){
+            //抛出异常..
+        }
+        //修改课程信息
+        one.setName(courseBase.getName());
+        one.setMt(courseBase.getMt());
+        one.setSt(courseBase.getSt());
+        one.setGrade(courseBase.getGrade());
+        one.setStudymodel(courseBase.getStudymodel());
+        one.setUsers(courseBase.getUsers());
+        one.setDescription(courseBase.getDescription());
+        CourseBase save = courseBaseRepository.save(one);
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 
 }

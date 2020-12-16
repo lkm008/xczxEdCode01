@@ -28,4 +28,10 @@ public interface CourseControllerApi {
 
     @ApiOperation("添加课程基础信息")
     public AddCourseResult addCourseBase(CourseBase courseBase);
+
+    @ApiOperation("获取课程基础信息")
+    public CourseBase getCourseBaseById(String courseId) throws RuntimeException;
+
+    @ApiOperation("更新课程基础信息")
+    public ResponseResult updateCourseBase(String id,CourseBase courseBase);
 }

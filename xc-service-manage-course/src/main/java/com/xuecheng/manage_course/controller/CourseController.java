@@ -42,4 +42,16 @@ public class CourseController implements CourseControllerApi {
     public AddCourseResult addCourseBase(@RequestBody CourseBase courseBase) {
         return courseService.addCourseBase(courseBase);
     }
+
+    @Override
+    @GetMapping("/coursebase/get/{courseId}")
+    public CourseBase getCourseBaseById(@PathVariable("courseId") String courseId) throws RuntimeException {
+        return courseService.getCoursebaseById(courseId);
+    }
+
+    @Override
+    @PutMapping("/coursebase/update/{id}")
+    public ResponseResult updateCourseBase(@PathVariable("id") String id, @RequestBody CourseBase courseBase) {
+        return courseService.updateCoursebase(id,courseBase);
+    }
 }
