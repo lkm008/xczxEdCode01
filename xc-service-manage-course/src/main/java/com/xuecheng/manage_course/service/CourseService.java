@@ -7,6 +7,7 @@ import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
+import com.xuecheng.framework.domain.course.response.AddCourseResult;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
@@ -118,6 +119,15 @@ public class CourseService {
         queryResult.setTotal(courseListPage.getTotal());
         queryResult.setList(courseListPage.getResult());
         return  new QueryResponseResult(CommonCode.SUCCESS,queryResult);
+    }
+
+    //添加课程提交
+    @Transactional
+    public AddCourseResult addCourseBase(CourseBase courseBase) {
+        //课程状态默认为未发布
+        courseBase.setStatus("202001");
+        courseBaseRepository.save(courseBase);
+        return new AddCourseResult(CommonCode.SUCCESS,courseBase.getId());
     }
 
 }

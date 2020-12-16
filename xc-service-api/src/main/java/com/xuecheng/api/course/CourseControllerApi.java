@@ -1,8 +1,10 @@
 package com.xuecheng.api.course;
 
+import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
+import com.xuecheng.framework.domain.course.response.AddCourseResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
@@ -23,4 +25,7 @@ public interface CourseControllerApi {
             int size,
             CourseListRequest courseListRequest
     );
+
+    @ApiOperation("添加课程基础信息")
+    public AddCourseResult addCourseBase(CourseBase courseBase);
 }
