@@ -208,4 +208,9 @@ public class CourseService {
         coursePicRepository.save(coursePic);
         return new ResponseResult(CommonCode.SUCCESS);
     }
+
+    //根据课程id查询课程图片
+    public CoursePic findCoursepic(String courseId) {
+        return coursePicRepository.findById(courseId).get();
+    }
 }
