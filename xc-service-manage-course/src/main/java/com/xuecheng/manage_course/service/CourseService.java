@@ -213,4 +213,15 @@ public class CourseService {
     public CoursePic findCoursepic(String courseId) {
         return coursePicRepository.findById(courseId).get();
     }
+
+    //删除课程图片
+    @Transactional
+    public ResponseResult deleteCoursePic(String courseId) {
+        //执行删除，返回1表示删除成功，返回0表示删除失败
+        long result = coursePicRepository.deleteByCourseid(courseId);
+        if(result>0){
+            return new ResponseResult(CommonCode.SUCCESS);
+        }
+        return new ResponseResult(CommonCode.FAIL);
+    }
 }
