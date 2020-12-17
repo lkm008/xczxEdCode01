@@ -11,8 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 
-import static org.junit.Assert.*;
-
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class CourseServiceTest {
@@ -60,4 +58,6 @@ public class CourseServiceTest {
         CourseMarket courseMarket = courseService.updateCourseMarket("40289981766c49ed01766c56f27f0001", one);
         System.out.println("courseMarket = " + courseMarket);
     }
+
+
 }
