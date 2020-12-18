@@ -3,12 +3,16 @@ package com.xuecheng.api.cms;
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.domain.cms.request.QueryTemplateRequest;
 import com.xuecheng.framework.domain.cms.response.CmsTemplateResult;
+import com.xuecheng.framework.domain.cms.response.UploadTemplateFileResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Api(value="cms模板管理接口",description = "cms模板管理接口，提供模板的增、删、改、查")
 public interface CmsTemplateControllerApi {
@@ -34,4 +38,6 @@ public interface CmsTemplateControllerApi {
 
     @ApiOperation("通过ID删除模板")
     public ResponseResult delete(String id);
+    @ApiOperation("保存模板文件")
+    public UploadTemplateFileResult saveTemplate(MultipartFile file) throws IOException ;
 }

@@ -4,11 +4,15 @@ import com.xuecheng.api.cms.CmsTemplateControllerApi;
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.domain.cms.request.QueryTemplateRequest;
 import com.xuecheng.framework.domain.cms.response.CmsTemplateResult;
+import com.xuecheng.framework.domain.cms.response.UploadTemplateFileResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_cms.service.CmsTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/cms/template")
@@ -50,5 +54,11 @@ public class CmsTemplateController implements CmsTemplateControllerApi {
     @DeleteMapping("/del/{id}") //使用http的delete方法完成岗位操作
     public ResponseResult delete(@PathVariable("id") String id) {
         return templateService.delete(id);
+    }
+
+    @Override
+    @PostMapping("/upload")
+    public UploadTemplateFileResult saveTemplate(@RequestParam("file")MultipartFile file) throws IOException {
+        return templateService.saveTemplate(file);
     }
 }

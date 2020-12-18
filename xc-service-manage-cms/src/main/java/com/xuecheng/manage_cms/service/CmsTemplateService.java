@@ -3,6 +3,7 @@ package com.xuecheng.manage_cms.service;
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.domain.cms.request.QueryTemplateRequest;
 import com.xuecheng.framework.domain.cms.response.CmsTemplateResult;
+import com.xuecheng.framework.domain.cms.response.UploadTemplateFileResult;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -14,8 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,8 +123,11 @@ public class CmsTemplateService {
 
     @Autowired
     GridFsTemplate gridFsTemplate;
-    public String saveTemplate(InputStream is,String filename){
-        ObjectId objectId = gridFsTemplate.store(is, filename, "");
-        return objectId.toString();
+    public UploadTemplateFileResult saveTemplate(MultipartFile file) throws IOException {
+        if (file.isEmpty()){
+            //异常
+        }
+        ObjectId objectId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
+        return new UploadTemplateFileResult(CommonCode.SUCCESS, objectId.toString());
     }
 }
