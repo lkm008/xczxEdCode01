@@ -20,6 +20,7 @@ public class CmsPagePreviewController extends BaseController {
     //接收到页面id
     @RequestMapping(value="/cms/preview/{pageId}",method = RequestMethod.GET)
     public void preview(@PathVariable("pageId")String pageId){
+        response.setHeader("Content-type","text/html;charset=utf-8");
         String pageHtml = pageService.getPageHtml(pageId);
         if(StringUtils.isNotEmpty(pageHtml)){
             try {
