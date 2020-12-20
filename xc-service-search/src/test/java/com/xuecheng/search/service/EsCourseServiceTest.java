@@ -21,6 +21,9 @@ EsCourseService esCourseService;
     public void testList() {
         CourseSearchParam courseSearchParam = new CourseSearchParam();
         courseSearchParam.setKeyword("java");
+        courseSearchParam.setMt("1-1");
+        courseSearchParam.setSt("1-1-1");
+        courseSearchParam.setGrade("200002");
         QueryResponseResult queryResponseResult = esCourseService.list(1, 10, courseSearchParam);
 //        System.out.println("queryResponseResult = " + queryResponseResult.getQueryResult());
         List<CoursePub> list = queryResponseResult.getQueryResult().getList();
