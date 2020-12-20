@@ -20,7 +20,7 @@ EsCourseService esCourseService;
     @Test
     public void testList() {
         CourseSearchParam courseSearchParam = new CourseSearchParam();
-        courseSearchParam.setKeyword("java");
+        courseSearchParam.setKeyword("开发框架");
         courseSearchParam.setMt("1-1");
         courseSearchParam.setSt("1-1-1");
         courseSearchParam.setGrade("200002");

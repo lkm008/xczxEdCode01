@@ -9,12 +9,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +78,28 @@ public class EsCourseService {
             boolQueryBuilder.filter(QueryBuilders.termQuery("grade",courseSearchParam.getGrade()));
         }
 //        ################################################################
+        //分页
+        if(page<=0){
+            page = 1;
+        }
+        if(size<=0){
+            size = 20;
+        }
+        int start = (page-1)*size;
+        searchSourceBuilder.from(start);
+        searchSourceBuilder.size(size);
+//        ##########################################################
         //布尔查询
         searchSourceBuilder.query(boolQueryBuilder);
-
+//##############################################################
+        //高亮设置
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.preTags("<font class='eslight'>");
+        highlightBuilder.postTags("</font>");
+        //设置高亮字段
+        highlightBuilder.fields().add(new HighlightBuilder.Field("name"));
+        searchSourceBuilder.highlighter(highlightBuilder);
+//        ################################################
         //请求搜索
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
@@ -105,6 +127,22 @@ public class EsCourseService {
 
             //取出名称
             String name = (String) sourceAsMap.get("name");
+//            ###########################
+            //取出高亮字段内容
+            Map<String, HighlightField> highlightFields = hit.getHighlightFields();
+            if(highlightFields!=null){
+                HighlightField nameField = highlightFields.get("name");
+                if(nameField!=null){
+                    Text[] fragments = nameField.getFragments();
+                    StringBuffer stringBuffer = new StringBuffer();
+                    for (Text str : fragments) {
+                        stringBuffer.append(str.string());
+                    }
+                    name = stringBuffer.toString();
+
+                }
+            }
+//            #############################
             coursePub.setName(name);
             //图片
             String pic = (String) sourceAsMap.get("pic");
