@@ -321,7 +321,7 @@ public class CourseService {
     }
 
     //课程发布
-    @Transactional
+//    @Transactional
     public CoursePublishResult publish(String courseId){
         //课程信息
         CourseBase one = this.findCourseBaseById(courseId);
@@ -348,7 +348,8 @@ public class CourseService {
 
         //页面url
         String pageUrl = cmsPostPageResult.getPageUrl();
-        return new CoursePublishResult(CommonCode.SUCCESS,pageUrl);
+        CoursePublishResult coursePublishResult = new CoursePublishResult(CommonCode.SUCCESS, pageUrl);
+        return coursePublishResult;
 
     }
     //更新课程发布状态
@@ -388,7 +389,7 @@ CoursePubRepository coursePubRepository;
 
     //保存CoursePub
     public CoursePub saveCoursePub(String id, CoursePub coursePub){
-        if(!StringUtils.isEmpty(id)){
+        if(StringUtils.isEmpty(id)){
             ExceptionCast.cast(CourseCode.COURSE_PUBLISH_COURSEIDISNULL);
         }
         CoursePub coursePubNew = null;
@@ -409,8 +410,8 @@ CoursePubRepository coursePubRepository;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
         String date = simpleDateFormat.format(new Date());
         coursePub.setPubTime(date);
-        coursePubRepository.save(coursePub);
-        return coursePub;
+        CoursePub save = coursePubRepository.save(coursePub);
+        return save;
 
     }
 
@@ -421,7 +422,7 @@ CoursePubRepository coursePubRepository;
 
         //基础信息
         Optional<CourseBase> courseBaseOptional = courseBaseRepository.findById(id);
-        if(courseBaseOptional == null){
+        if(courseBaseOptional != null){
             CourseBase courseBase = courseBaseOptional.get();
             BeanUtils.copyProperties(courseBase, coursePub);
         }

@@ -112,5 +112,6 @@ public class CourseController implements CourseControllerApi {
     @PostMapping("/publish/{id}")
     public CoursePublishResult publish(@PathVariable String id) {
         return courseService.publish(id);
+//        return new CoursePublishResult(CommonCode.SUCCESS, "pageUrl");
     }
 }

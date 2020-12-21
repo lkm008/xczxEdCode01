@@ -51,7 +51,7 @@
         <div class="banner-rit">
 	    
 	    <#if (coursePic.pic)??>
-	     <p><img src="http://img.xuecheng.com/${coursePic.pic}" alt="" width="270" height="156"> </p>
+	     <p><img src="http://img.xuecheng.com:81/${coursePic.pic}" alt="" width="270" height="156"> </p>
 	     <#else>
 		 <p><img src="/static/img/widget-video.png" alt="" width="270" height="156"> </p>
 	    </#if>

@@ -1,5 +1,6 @@
 server:
   port: ${PORT:31001}
+  connection-timeout: 20000
 spring:
   application:
     name: xc-service-manage-cms
