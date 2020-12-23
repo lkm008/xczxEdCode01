@@ -1,0 +1,15 @@
+server:
+  port: 31400
+spring:
+  application:
+    name: xc-service-manage-media
+  data:
+    mongodb:
+      uri:  mongodb://@localhost:27017
+      database: xc_media
+xc-service-manage-media:
+  upload-location: F:/develop/video/
+
+
+
+
