@@ -1,6 +1,7 @@
 package com.xuecheng.framework.utils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public class VideoUtil {
 
-    String ffmpeg_path = "D:\\Program Files\\ffmpeg-20180227-fa0c9d6-win64-static\\bin\\ffmpeg.exe";//ffmpeg的安装位置
+    String ffmpeg_path = "D:\\Program\\install\\ffmpeg-N-100449-g28aedc7f54-win64-gpl-vulkan\\bin\\ffmpeg.exe";//ffmpeg的安装位置
 
     public VideoUtil(String ffmpeg_path){
         this.ffmpeg_path = ffmpeg_path;
@@ -126,9 +127,9 @@ public class VideoUtil {
 
 
     public static void main(String[] args) throws IOException {
-        String ffmpeg_path = "D:\\Program Files\\ffmpeg-20180227-fa0c9d6-win64-static\\bin\\ffmpeg.exe";//ffmpeg的安装位置
+        String ffmpeg_path = "D:\\Program\\install\\ffmpeg-N-100449-g28aedc7f54-win64-gpl-vulkan\\bin\\ffmpeg.exe";//ffmpeg的安装位置
         VideoUtil videoUtil = new VideoUtil(ffmpeg_path);
-        String video_time = videoUtil.get_video_time("E:\\ffmpeg_test\\1.avi");
+        String video_time = videoUtil.get_video_time("F:\\develop\\ffmpeg\\1.avi");
         System.out.println(video_time);
     }
 }

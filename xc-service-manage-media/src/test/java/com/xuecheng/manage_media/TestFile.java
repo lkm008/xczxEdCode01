@@ -27,9 +27,9 @@ public class TestFile {
     @Test
     public void testChunk() throws IOException {
         //源文件
-        File sourceFile = new File("E:\\ffmpeg_test\\lucene.avi");
+        File sourceFile = new File("F:\\develop\\ffmpeg\\lucene.avi");
         //块文件目录
-        String chunkFileFolder = "E:\\ffmpeg_test\\chunks\\";
+        String chunkFileFolder = "F:\\develop\\ffmpeg\\chunks\\";
 
         //先定义块文件大小
         long chunkFileSize = 1 * 1024 * 1024;
@@ -69,7 +69,7 @@ public class TestFile {
     @Test
     public void testMergeFile() throws IOException {
         //块文件目录
-        String chunkFileFolderPath = "E:\\ffmpeg_test\\chunks\\";
+        String chunkFileFolderPath = "F:\\develop\\ffmpeg\\chunks\\";
         //块文件目录对象
         File chunkFileFolder = new File(chunkFileFolderPath);
         //块文件列表
@@ -88,7 +88,7 @@ public class TestFile {
         });
 
         //合并文件
-        File mergeFile = new File("E:\\ffmpeg_test\\lucene_merge.avi");
+        File mergeFile = new File("F:\\develop\\ffmpeg\\lucene_merge.avi");
         //创建新文件
         boolean newFile = mergeFile.createNewFile();
 
