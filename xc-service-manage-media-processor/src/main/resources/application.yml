@@ -13,10 +13,11 @@ spring:
     username: guest
     password: guest
     virtual-host: /
+
 xc-service-manage-media:
   mq:
     queue-media-video-processor: queue_media_video_processor
     routingkey-media-video: routingkey_media_video
   ffmpeg-path: D:/Program/install/ffmpeg-N-100449-g28aedc7f54-win64-gpl-vulkan/bin/ffmpeg.exe
-  video-location: F:/develop/video/
+  upload-location: F:/develop/video/
 
