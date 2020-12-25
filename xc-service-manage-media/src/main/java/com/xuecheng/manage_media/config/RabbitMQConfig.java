@@ -1,14 +1,12 @@
-package com.xuecheng.manage_media_process.config;
+package com.xuecheng.manage_media.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-// @PropertySource("classpath:application.yml")
 public class RabbitMQConfig {
     public static final String EX_MEDIA_PROCESSTASK = "ex_media_processor";
 
@@ -20,6 +18,7 @@ public class RabbitMQConfig {
     @Value("${xc-service-manage-media.mq.routingkey-media-video}")
     public  String routingkey_media_video;
 
+        
     /**
      * 交换机配置
      * @return the exchange
