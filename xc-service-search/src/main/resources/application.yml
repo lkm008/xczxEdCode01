@@ -2,7 +2,7 @@ server:
   port: ${port:40100}
 spring:
   application:
-    name: xc-search-service
+    name: xc-service-search
 eureka:
   client:
     registerWithEureka: true #服务注册开关
