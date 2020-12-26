@@ -85,6 +85,7 @@ public class MediaUploadService {
 
     //文件上传注册
     public ResponseResult register(String fileMd5, String fileName, String fileSize, String mimetype, String fileExt) {
+        System.out.println("文件上传注册开始");
         //检查文件是否上传
         //1、得到文件的路径
         String filePath = getFilePath(fileMd5, fileExt);
@@ -101,6 +102,7 @@ public class MediaUploadService {
             //上传文件目录创建失败
             ExceptionCast.cast(MediaCode.UPLOAD_FILE_REGISTER_CREATEFOLDER_FAIL);
         }
+        System.out.println("文件上传注册结束");
         return new ResponseResult(CommonCode.SUCCESS);
     }
 
@@ -113,11 +115,13 @@ public class MediaUploadService {
 
     //检查块文件
     public CheckChunkResult checkchunk(String fileMd5, String chunk, String chunkSize) {
+        System.out.println("检查块文件开始");
         //得到块文件所在路径
         String chunkfileFolderPath = getChunkFileFolderPath(fileMd5);
         //块文件的文件名称以1,2,3..序号命名，没有扩展名
         File chunkFile = new File(chunkfileFolderPath + chunk);
         if (chunkFile.exists()) {
+            System.out.println("检查块文件结束");
             return new CheckChunkResult(MediaCode.CHUNK_FILE_EXIST_CHECK, true);
         } else {
             return new CheckChunkResult(MediaCode.CHUNK_FILE_EXIST_CHECK, false);
@@ -127,6 +131,7 @@ public class MediaUploadService {
     /*4 上传分块*/
 //块文件上传
     public ResponseResult uploadchunk(MultipartFile file, String fileMd5, String chunk) {
+        System.out.println("块文件上传开始");
         if (file == null) {
             ExceptionCast.cast(MediaCode.UPLOAD_FILE_REGISTER_ISNULL);
         }
@@ -158,6 +163,7 @@ public class MediaUploadService {
             }
 
         }
+        System.out.println("块文件上传结束");
         return new ResponseResult(CommonCode.SUCCESS);
     }
 
@@ -181,6 +187,7 @@ public class MediaUploadService {
 
    3）向Mongodb写入文件信息*/
     public ResponseResult mergechunks(String fileMd5, String fileName, Long fileSize, String mimetype, String fileExt) {
+        System.out.println("合并分块开始");
         //获取块文件的路径
         String chunkfileFolderPath = getChunkFileFolderPath(fileMd5);
         File chunkfileFolder = new File(chunkfileFolderPath);
@@ -233,7 +240,10 @@ public class MediaUploadService {
 
         String mediaId = save.getFileId();
         //向MQ发送视频处理消息
+        System.out.println("开始向MQ发送视频处理消息！");
         sendProcessVideoMsg(mediaId);
+        System.out.println("结束向MQ发送视频处理消息！");
+        System.out.println("合并分块结束");
         return new ResponseResult(CommonCode.SUCCESS);
     }
 
