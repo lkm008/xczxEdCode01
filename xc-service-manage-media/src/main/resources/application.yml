@@ -5,9 +5,25 @@ spring:
     name: xc-service-manage-media
   data:
     mongodb:
-      uri:  mongodb://@localhost:27017
+      uri:  mongodb://localhost:27017
       database: xc_media
+  #SpringMVC上传文件配置
+  servlet:
+    multipart:
+      #默认支持文件上传.
+      enabled: true
+      #支持文件写入磁盘.
+      file-size-threshold: 0
+      # 上传文件的临时目录
+      location:
+      # 最大支持文件大小
+      max-file-size: 1MB
+      # 最大支持请求大小
+      max-request-size: 30MB
 xc-service-manage-media:
+  mq:
+    queue-media-video-processor: queue_media_video_processor
+    routingkey-media-video: routingkey_media_video
   upload-location: F:/develop/video/
 
 
