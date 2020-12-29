@@ -1,6 +1,7 @@
 package com.xuecheng.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.bootstrap.encrypt.KeyProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -10,12 +11,18 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.security.KeyPair;
 
 
 @Configuration
@@ -23,6 +30,9 @@ import javax.sql.DataSource;
 class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+    //jwt令牌转换器
+    @Autowired
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -33,8 +43,16 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     RedisConnectionFactory redisConnectionFactory;
     @Autowired
     UserDetailsService userDetailsService;
+    @Autowired
+    private CustomUserAuthenticationConverter customUserAuthenticationConverter;
+    //读取密钥的配置
+    @Bean("keyProp")
+    public KeyProperties keyProperties(){
+        return new KeyProperties();
+    }
 
-
+    @Resource(name = "keyProp")
+    private KeyProperties keyProperties;
     //客户端配置
     @Bean
     public ClientDetailsService clientDetails() {
@@ -74,12 +92,28 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
      * redis存储token
      * @return
      */
-   @Bean
+   /*@Bean
    public TokenStore tokenStore(RedisConnectionFactory redisConnectionFactory){
        RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
        return redisTokenStore;
-   }
-
+   }*/
+    @Bean
+    @Autowired
+    public TokenStore tokenStore(JwtAccessTokenConverter jwtAccessTokenConverter) {
+        return new JwtTokenStore(jwtAccessTokenConverter);
+    }
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter(CustomUserAuthenticationConverter customUserAuthenticationConverter) {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        KeyPair keyPair = new KeyStoreKeyFactory
+                (keyProperties.getKeyStore().getLocation(), keyProperties.getKeyStore().getSecret().toCharArray())
+                .getKeyPair(keyProperties.getKeyStore().getAlias(),keyProperties.getKeyStore().getPassword().toCharArray());
+        converter.setKeyPair(keyPair);
+        //配置自定义的CustomUserAuthenticationConverter
+        DefaultAccessTokenConverter accessTokenConverter = (DefaultAccessTokenConverter) converter.getAccessTokenConverter();
+        accessTokenConverter.setUserTokenConverter(customUserAuthenticationConverter);
+        return converter;
+    }
     //授权服务器端点配置
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -100,9 +134,25 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                         //.tokenStore(tokenStore);
                 .tokenServices(defaultTokenServices);*/
-        endpoints.authenticationManager(this.authenticationManager)
-                .tokenStore(tokenStore(redisConnectionFactory))
-        .userDetailsService(userDetailsService);
+        endpoints.accessTokenConverter(jwtAccessTokenConverter)
+                .authenticationManager(authenticationManager)
+                .tokenStore(tokenStore)
+                .userDetailsService(userDetailsService);
+    }
+    /**
+     * 资源服务器所需，后面会讲
+     * 具体作用见本系列的第二篇文章授权服务器最后一部分
+     * 具体原因见本系列的第三篇文章资源服务器
+     *
+     * @param security security
+     */
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) {
+        security
+                // 能够验证和解析 token
+                .checkTokenAccess("isAuthenticated()");
+                // 能够访问我们的公钥
+                // .tokenKeyAccess("isAuthenticated()");
     }
 }
 
