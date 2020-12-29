@@ -154,5 +154,7 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
                 // 能够访问我们的公钥
                 // .tokenKeyAccess("isAuthenticated()");
     }
+
+
 }
 

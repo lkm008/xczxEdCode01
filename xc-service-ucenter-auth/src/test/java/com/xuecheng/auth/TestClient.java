@@ -55,8 +55,8 @@ public class TestClient {
         //定义body
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type","password");
-        body.add("username","itcast");
-        body.add("password","12322");
+        body.add("username","admin");
+        body.add("password","admin");
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(body, header);
         //String url, HttpMethod method, @Nullable HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables
