@@ -40,6 +40,8 @@ public class AuthController implements AuthControllerApi {
     AuthService authService;
     @Autowired
     HttpServletRequest request;
+    @Autowired
+    HttpServletResponse response;
 
     @Override
     @PostMapping("/userlogin")
@@ -70,10 +72,22 @@ public class AuthController implements AuthControllerApi {
         CookieUtil.addCookie(response, cookieDomain, "/", "uid", token, cookieMaxAge, false);
     }
 
+    //退出
     @Override
     @PostMapping("/userlogout")
     public ResponseResult logout() {
-        return null;
+        //取出身份令牌
+        String uid = getTokenFormCookie();
+        //删除redis中token
+        authService.delToken(uid);
+        //清除cookie
+        clearCookie(uid);
+
+        return new ResponseResult(CommonCode.SUCCESS);
+    }
+    //清除cookie
+    private void clearCookie(String token){
+        CookieUtil.addCookie(response, cookieDomain, "/", "uid", token, 0, false);
     }
 
     @Override

@@ -171,5 +171,12 @@ public class AuthService {
         }
         return null;
     }
+
+    //从redis中删除令牌
+    public boolean delToken(String access_token){
+        String name = "user_token:" + access_token;
+        stringRedisTemplate.delete(name);
+        return true;
+    }
 }
 
