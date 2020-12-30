@@ -8,12 +8,11 @@ import com.xuecheng.framework.model.response.ResponseResult;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Component
+// @Component
 public class LoginFilterTest extends ZuulFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoginFilterTest.class);

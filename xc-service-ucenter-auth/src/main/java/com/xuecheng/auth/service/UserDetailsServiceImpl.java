@@ -16,6 +16,9 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
@@ -63,11 +66,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
        user_permission.add("course_get_baseinfo");//查询课程信息
        user_permission.add("course_pic_list");//图片查询
         String user_permission_string  = StringUtils.join(user_permission.toArray(), ",");*/
-        String user_permission_string = "";
+        //指定用户的权限，这里暂时硬编码
+        List<String> permissionList = new ArrayList<>();
+
+        permissionList.add("course_get_baseinfo");
+        permissionList.add("course_find_pic");
+        //将权限串中间以逗号分隔
+        String permissionString = StringUtils.join(permissionList.toArray(), ",");
+        // String user_permission_string = "";
 
         UserJwt userDetails = new UserJwt(username,
                 password,
-                AuthorityUtils.commaSeparatedStringToAuthorityList(user_permission_string));
+                AuthorityUtils.commaSeparatedStringToAuthorityList(permissionString));
         userDetails.setId(userext.getId());
         userDetails.setUtype(userext.getUtype());//用户类型
         userDetails.setCompanyId(userext.getCompanyId());//所属企业

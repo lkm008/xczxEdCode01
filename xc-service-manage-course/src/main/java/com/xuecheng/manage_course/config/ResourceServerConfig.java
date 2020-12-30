@@ -59,9 +59,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .authorizeRequests()
                 //下边的路径放行
-                .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
-                        "/swagger-resources","/swagger-resources/configuration/security",
-                        "/swagger-ui.html","/course/coursepic/list/*","/course/coursebase/get/*")
+                .antMatchers("/v2/api-docs",
+                        "/swagger-resources/configuration/ui",
+                        "/swagger-resources",
+                        "/swagger-resources/configuration/security",
+                        "/swagger-ui.html",
+                        "/course/coursepic/list/*",
+                        "/course/coursebase/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

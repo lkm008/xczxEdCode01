@@ -12,6 +12,7 @@ import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class CourseController implements CourseControllerApi {
     @Autowired
     CourseService courseService;
+
     //查询课程计划
     @Override
     @GetMapping("/teachplan/list/{courseId}")
@@ -33,10 +35,11 @@ public class CourseController implements CourseControllerApi {
         return courseService.addTeachplan(teachplan);
     }
 
+
     @Override
     @GetMapping("/coursebase/list/{page}/{size}")
-    public QueryResponseResult findCourseList(@PathVariable("page")int page,@PathVariable("size") int size, CourseListRequest courseListRequest) {
-        return courseService.findCourseList(page,size,courseListRequest);
+    public QueryResponseResult findCourseList(@PathVariable("page") int page, @PathVariable("size") int size, CourseListRequest courseListRequest) {
+        return courseService.findCourseList(page, size, courseListRequest);
     }
 
     @Override
@@ -44,7 +47,7 @@ public class CourseController implements CourseControllerApi {
     public AddCourseResult addCourseBase(@RequestBody CourseBase courseBase) {
         return courseService.addCourseBase(courseBase);
     }
-
+    @PreAuthorize("hasAuthority('course_get_baseinfo')")
     @Override
     @GetMapping("/coursebase/get/{courseId}")
     public CourseBase getCourseBaseById(@PathVariable("courseId") String courseId) throws RuntimeException {
@@ -54,16 +57,16 @@ public class CourseController implements CourseControllerApi {
     @Override
     @PutMapping("/coursebase/update/{id}")
     public ResponseResult updateCourseBase(@PathVariable("id") String id, @RequestBody CourseBase courseBase) {
-        return courseService.updateCoursebase(id,courseBase);
+        return courseService.updateCoursebase(id, courseBase);
     }
 
     @Override
     @PostMapping("/coursemarket/update/{id}")
     public ResponseResult updateCourseMarket(@PathVariable("id") String id, @RequestBody CourseMarket courseMarket) {
         CourseMarket courseMarket_u = courseService.updateCourseMarket(id, courseMarket);
-        if(courseMarket_u!=null){
+        if (courseMarket_u != null) {
             return new ResponseResult(CommonCode.SUCCESS);
-        }else{
+        } else {
             return new ResponseResult(CommonCode.FAIL);
         }
     }
@@ -78,7 +81,7 @@ public class CourseController implements CourseControllerApi {
     @PostMapping("/coursepic/add")
     public ResponseResult addCoursePic(@RequestParam("courseId") String courseId, @RequestParam("pic") String pic) {
         //保存课程图片
-        return courseService.saveCoursePic(courseId,pic);
+        return courseService.saveCoursePic(courseId, pic);
     }
 
     @Override
@@ -109,7 +112,7 @@ public class CourseController implements CourseControllerApi {
     @PostMapping("/publish/{id}")
     public CoursePublishResult publish(@PathVariable String id) {
         return courseService.publish(id);
-//        return new CoursePublishResult(CommonCode.SUCCESS, "pageUrl");
+        //        return new CoursePublishResult(CommonCode.SUCCESS, "pageUrl");
     }
 
     @Override
