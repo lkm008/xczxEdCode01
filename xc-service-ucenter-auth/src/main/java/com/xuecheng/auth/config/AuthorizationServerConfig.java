@@ -150,9 +150,9 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerSecurityConfigurer security) {
         security
                 // 能够验证和解析 token
-                .checkTokenAccess("isAuthenticated()");
+                .checkTokenAccess("isAuthenticated()")
                 // 能够访问我们的公钥
-                // .tokenKeyAccess("isAuthenticated()");
+                .tokenKeyAccess("isAuthenticated()");
     }
 
 

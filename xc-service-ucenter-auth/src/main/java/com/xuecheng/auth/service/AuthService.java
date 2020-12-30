@@ -5,6 +5,7 @@ import com.xuecheng.framework.client.XcServiceList;
 import com.xuecheng.framework.domain.ucenter.ext.AuthToken;
 import com.xuecheng.framework.domain.ucenter.response.AuthCode;
 import com.xuecheng.framework.exception.ExceptionCast;
+import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,19 +92,20 @@ public class AuthService {
         //定义头
         MultiValueMap<String,String> header = new LinkedMultiValueMap<>();
         header.add("Authorization", httpbasic(clientId,clientSecret));
-        //指定 restTemplate当遇到400或401响应时候也不要抛出异常，也要正常返回值
-        restTemplate.setErrorHandler(new DefaultResponseErrorHandler(){
-
-            @Override
-            public void handleError(ClientHttpResponse response) throws IOException {
-                //当响应的值为400或401时候也要正常响应，不要抛出异常
-                if(response.getRawStatusCode()!=400 && response.getRawStatusCode()!=401){
-                    super.handleError(response);
-                }
-            }
-        });
         Map map = null;
+
         try {
+            //指定 restTemplate当遇到400或401响应时候也不要抛出异常，也要正常返回值
+            restTemplate.setErrorHandler(new DefaultResponseErrorHandler(){
+
+                @Override
+                public void handleError(ClientHttpResponse response) throws IOException {
+                    //当响应的值为400或401时候也要正常响应，不要抛出异常
+                    if(response.getRawStatusCode()!=400 && response.getRawStatusCode()!=401){
+                        super.handleError(response);
+                    }
+                }
+            });
             //http请求spring security的申请令牌接口
             ResponseEntity<Map> mapResponseEntity = restTemplate.exchange(path, HttpMethod.POST, new HttpEntity<MultiValueMap<String, String>>(formData, header), Map.class);
             map = mapResponseEntity.getBody();
@@ -119,6 +121,15 @@ public class AuthService {
                 map.get("access_token") == null ||
                 map.get("refresh_token") == null ||
                 map.get("jti") == null){//jti是jwt令牌的唯一标识作为用户身份令牌
+            //获取spring security返回的错误信息
+            String error_description = (String) map.get("error_description");
+            if(StringUtils.isNotEmpty(error_description)){
+                if(error_description.equals("坏的凭证")){
+                    ExceptionCast.cast(AuthCode.AUTH_CREDENTIAL_ERROR);
+                }else if(error_description.indexOf("UserDetailsService returned null")>=0){
+                    ExceptionCast.cast(AuthCode.AUTH_ACCOUNT_NOTEXISTS);
+                }
+            }
             ExceptionCast.cast(AuthCode.AUTH_LOGIN_APPLYTOKEN_FAIL);
         }
         AuthToken authToken = new AuthToken();

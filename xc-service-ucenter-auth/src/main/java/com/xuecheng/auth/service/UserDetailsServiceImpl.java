@@ -1,6 +1,6 @@
 package com.xuecheng.auth.service;
 
-import com.xuecheng.framework.domain.ucenter.XcMenu;
+import com.xuecheng.auth.client.UserClient;
 import com.xuecheng.framework.domain.ucenter.ext.XcUserExt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +11,17 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    UserClient userClient;
     @Autowired
     ClientDetailsService clientDetailsService;
     @Override
@@ -43,14 +41,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
 
-       XcUserExt userext = new XcUserExt();
+      /* XcUserExt userext = new XcUserExt();
        userext.setUsername("admin");
        userext.setPassword(new BCryptPasswordEncoder().encode("admin"));
-       userext.setPermissions(new ArrayList<XcMenu>());//权限暂时用静态的
-
+       userext.setPermissions(new ArrayList<XcMenu>());//权限暂时用静态的*/
+        //请求ucenter查询用户
+        XcUserExt userext = userClient.getUserext(username);
+        if(userext == null){
+            //返回NULL表示用户不存在，Spring Security会抛出异常
+            return null;
+        }
         //取出正确密码（hash值）
         String password = userext.getPassword();
-        List<XcMenu> permissions = userext.getPermissions();
+       /* List<XcMenu> permissions = userext.getPermissions();
         if(permissions == null){
             permissions = new ArrayList<>();
         }
@@ -59,8 +62,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 使用静态的权限表示用户所拥有的权限
        user_permission.add("course_get_baseinfo");//查询课程信息
        user_permission.add("course_pic_list");//图片查询
-        String user_permission_string  = StringUtils.join(user_permission.toArray(), ",");
-
+        String user_permission_string  = StringUtils.join(user_permission.toArray(), ",");*/
+        String user_permission_string = "";
 
         UserJwt userDetails = new UserJwt(username,
                 password,
