@@ -47,7 +47,8 @@ public class CourseController implements CourseControllerApi {
     public AddCourseResult addCourseBase(@RequestBody CourseBase courseBase) {
         return courseService.addCourseBase(courseBase);
     }
-    @PreAuthorize("hasAuthority('course_get_baseinfo')")
+    // @PreAuthorize("hasAuthority('course_get_baseinfo')")
+    @PreAuthorize("hasAuthority('xc_teachmanager_course_base')")
     @Override
     @GetMapping("/coursebase/get/{courseId}")
     public CourseBase getCourseBaseById(@PathVariable("courseId") String courseId) throws RuntimeException {
