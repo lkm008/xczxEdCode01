@@ -89,6 +89,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userDetails.setCompanyId(userext.getCompanyId());//所属企业
         userDetails.setName(userext.getName());//用户名称
         userDetails.setUserpic(userext.getUserpic());//用户头像;
+        //用户所属企业id
+        userDetails.setCompanyId(userext.getCompanyId());
         return userDetails;
 
     }
