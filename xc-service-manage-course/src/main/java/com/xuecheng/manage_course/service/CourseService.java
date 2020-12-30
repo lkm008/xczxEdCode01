@@ -133,7 +133,20 @@ public class CourseService {
         return new ResponseResult(CommonCode.SUCCESS);
     }
 
-    public QueryResponseResult findCourseList(int page, int size, CourseListRequest courseListRequest) {
+    public QueryResponseResult findCourseList(String companyId,int page, int size, CourseListRequest courseListRequest) {
+        if(courseListRequest == null){
+            courseListRequest = new CourseListRequest();
+        }
+        //企业id
+        courseListRequest.setCompanyId(companyId);
+        //将companyId传给dao
+        courseListRequest.setCompanyId(companyId);
+        if(page<=0){
+            page = 0;
+        }
+        if(size<=0){
+            size = 20;
+        }
         PageHelper.startPage(page, size);//查询第一页，每页显示10条记录
         Page<CourseInfo> courseListPage = courseMapper.findCourseListPage(courseListRequest);
         QueryResult<CourseInfo> queryResult = new QueryResult<>();
