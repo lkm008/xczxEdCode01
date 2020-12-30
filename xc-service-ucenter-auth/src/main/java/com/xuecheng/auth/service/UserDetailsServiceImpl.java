@@ -1,6 +1,7 @@
 package com.xuecheng.auth.service;
 
 import com.xuecheng.auth.client.UserClient;
+import com.xuecheng.framework.domain.ucenter.XcMenu;
 import com.xuecheng.framework.domain.ucenter.ext.XcUserExt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +70,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //指定用户的权限，这里暂时硬编码
         List<String> permissionList = new ArrayList<>();
 
-        permissionList.add("course_get_baseinfo");
-        permissionList.add("course_find_pic");
+        // permissionList.add("course_get_baseinfo");
+        // permissionList.add("course_find_pic");
+        //取出用户权限
+        List<XcMenu> permissions = userext.getPermissions();
+        for(XcMenu xcMenu:permissions){
+            permissionList.add(xcMenu.getCode());
+        }
         //将权限串中间以逗号分隔
         String permissionString = StringUtils.join(permissionList.toArray(), ",");
         // String user_permission_string = "";
